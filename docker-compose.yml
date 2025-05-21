@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-      - TELEGRAM_USER_IDS=${TELEGRAM_USER_IDS}
+      - TELEGRAM_USER_ID=${TELEGRAM_USER_ID}
     volumes:
       - ./logs:/app/logs
     healthcheck:
