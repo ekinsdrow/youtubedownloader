@@ -10,6 +10,8 @@ RUN apk add --no-cache ffmpeg
 # Install dependencies
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
+RUN npm install --save-dev ts-node @types/fluent-ffmpeg
+
 
 # Copy source code
 COPY . .
