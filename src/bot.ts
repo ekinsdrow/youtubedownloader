@@ -1,20 +1,30 @@
 import downloadMp3ByUrl, { deleteFile } from "./services/file-downloader";
-import Logger from "./services/logger";
+import Bot from "./services/bot";
+import dotenv from "dotenv";
 
 async function main() {
-  const logger = new Logger();
+  dotenv.config();
+  const token = process.env.TELEGRAM_BOT_TOKEN as string;
+  const userId = process.env.TELEGRAM_USER_ID as string;
 
+  if (!token || !userId) {
+    throw new Error("TELEGRAM_BOT_TOKEN and TELEGRAM_USER_ID are required");
+  }
+
+  const bot = new Bot(token, userId, (url) => download(url, bot));
+}
+
+async function download(url: string, bot: Bot) {
   try {
     const outputPath = await downloadMp3ByUrl(
-      "https://www.youtube.com/watch?v=txLKZ2oLwa8",
-      logger
+      url,
+      bot
     );
+    await bot.logFile(outputPath);
 
-    logger.logFile(outputPath);
-    
     await deleteFile(outputPath);
   } catch (error) {
-    logger.logError(`❌ Error: ${error}`);
+    bot.logError(`❌ Error: ${error}`);
   }
 }
 
