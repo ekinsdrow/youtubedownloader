@@ -4,6 +4,9 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
+# Install ffmpeg
+RUN apk add --no-cache ffmpeg
+
 # Install dependencies
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
